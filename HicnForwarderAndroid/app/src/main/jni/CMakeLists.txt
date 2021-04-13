@@ -26,6 +26,7 @@ find_package(Libhicn REQUIRED)
 find_package(Hicnlight REQUIRED)
 find_package(HicnHttpproxy REQUIRED)
 find_package(Config REQUIRED)
+find_package(Libconfig++ REQUIRED)
 find_package(Libhicnctrl REQUIRED)
 find_package(Libfacemgr REQUIRED)
 find_package(Threads REQUIRED)
@@ -46,5 +47,6 @@ target_link_libraries(hiperf-wrapper
         ${LIBPARC_LIBRARIES}
         ${LIBEVENT_LIBRARIES}
         ${CONFIG_LIBRARY}
+        ${LIBCONFIG_CPP_LIBRARY}
         ${OPENSSL_LIBRARIES})
 

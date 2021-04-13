@@ -89,6 +89,7 @@ modules_dir=
 	include config/modules/109-curl.mk
 	include config/modules/120-libparc.mk
 	include config/modules/130-hicn.mk
+        include config/modules/140-hproxy.mk
 	include config/modules/610-libdash.mk
 
 # Load user defined modules
@@ -134,7 +135,7 @@ compile-dep: init compile-openssl install-asio libconfig libevent
 download-hicn:
 	@bash scripts/download_hicn.sh;
 
-compile-hicn: init download-hicn cframework/libparc hicn
+compile-hicn: init download-hicn cframework/libparc hicn hproxy
 
 download-qtdep:
 	@bash  scripts/download_qtdep.sh;

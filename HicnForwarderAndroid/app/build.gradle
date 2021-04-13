@@ -95,6 +95,7 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    ndkVersion '21.1.6352462'
 }
 
 def enableHProxy() {
@@ -164,15 +165,19 @@ repositories {
 
 dependencies {
 
-    if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1) {
-        implementation 'com.cisco.hicn:hproxy:+'
-    } else {
-        implementation project(":hproxyLibrary")
-    }
+    //if (Integer.parseInt(this.properties['ENABLE_HPROXY']) == 1) {
+    //    implementation 'com.cisco.hicn:hproxy:+'
+    //} else {
+    //    implementation project(":hproxyLibrary")
+   // }
 
+    //implementation 'com.cisco.hicn:hicnforwarder:+'
+    //implementation 'com.cisco.hicn:facemgr:+'
     implementation 'com.cisco.hicn:common:+'
-    implementation 'com.cisco.hicn:hicnforwarder:+'
-    implementation 'com.cisco.hicn:facemgr:+'
+    implementation project(":semtun-manager")
+    implementation project(":hproxyLibrarySrc")
+    implementation project(":aar:facemgrLibrary")
+    implementation project(":aar:hicnforwarderLibrary")
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
