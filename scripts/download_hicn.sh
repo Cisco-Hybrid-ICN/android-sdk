@@ -71,3 +71,8 @@ if [ ! -d cframework ]; then
 fi
 
 cd ..
+
+if [ ! -d hproxy-aar ]; then
+	echo "hproxy-aar not found"
+	git clone ssh://git@bitbucket-eng-gpk1.cisco.com:7999/ngl/hproxy-aar.git
+fi
