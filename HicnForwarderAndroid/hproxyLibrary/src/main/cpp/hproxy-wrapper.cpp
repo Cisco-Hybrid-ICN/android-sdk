@@ -234,29 +234,12 @@ Java_com_cisco_hicn_hproxylibrary_supportlibrary_HProxyLibrary_isHProxyEnabled(J
     return JNI_TRUE;
 }
 
-#if 0
-extern "C" JNIEXPORT jstring JNICALL
-Java_hicn_cisco_hproxylibrary_supportlibrary_HProxyLibrary_getProxifiedAppName(JNIEnv *env, jclass thiz) {
-    return env->NewStringUTF(HicnProxy::getProxifiedAppName());
-
-}
-#endif
-
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_cisco_hicn_hproxylibrary_supportlibrary_HProxyLibrary_getHicnServiceName(JNIEnv *env, jclass thiz) {
 
     return env->NewStringUTF(HicnProxy::getHicnServiceName());
 
 }
-
-#if 0
-extern "C" JNIEXPORT jstring JNICALL
-Java_hicn_cisco_hproxylibrary_supportlibrary_HProxyLibrary_getProxifiedPackageName(JNIEnv *env,
-                                                                            jclass thiz) {
-    return env->NewStringUTF(HicnProxy::getProxifiedPackageName());
-}
-#endif
-
 
 extern "C"
 JNIEXPORT void JNICALL
@@ -352,30 +335,42 @@ void fillJavaPuntingSpecValues(JNIEnv * env, jobject jPuntingSpec,
     return;
 }
 
-extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_cisco_hicn_hproxylibrary_supportlibrary_HProxyLibrary_getPuntingSpecs(JNIEnv *env,
-                                                                    jclass thiz)
-//jobject obj) // https://coderanch.com/t/273468/java/JNI-structures
+
+jobjectArray
+getPuntingSpecArray(JNIEnv *env, jclass thiz)
 {
+    std::vector<punting_spec_t> specs;
 
+    HicnProxy *proxy = (HicnProxy *) env->GetLongField(instance,
+            getPtrFieldId(env, instance, HPROXY_ATTRIBUTE));
+    if (proxy)
+        specs = proxy->getPuntingSpecs();
 
-    loadJniPuntingSpec(env);
+    jobjectArray jPuntingSpecArray = env->NewObjectArray(specs->size,
+         jniPuntingSpec->cls, NULL);
 
-    const punting_spec_t * punting_specs = HicnProxy::getPuntingSpecs();
+   
+    size_t pos = 0;
+    for(auto spec : specs) {
+        
+        fillJavaPuntingSpecValues(env, jPuntingSpec, spec);
+        env->SetObjectArrayElement(jPuntingSpecArray, pos++, jPuntingSpec);
 
-    int count;
-    for (count = 0;  punting_specs[count].app_name; count++)
-        ;
-    jobjectArray jPuntingSpecArray = env->NewObjectArray(count, jniPuntingSpec->cls, NULL);
-
-    for (int i = 0; i < count; i++) {
         jobject jPuntingSpec = env->NewObject(jniPuntingSpec->cls, jniPuntingSpec->ctorID);
-        fillJavaPuntingSpecValues(env, jPuntingSpec, punting_specs[i]);
-        env->SetObjectArrayElement(jPuntingSpecArray, i, jPuntingSpec);
+
     }
 
     return jPuntingSpecArray;
 
+}
+
+extern "C" JNIEXPORT jobjectArray JNICALL
+Java_com_cisco_hicn_hproxylibrary_supportlibrary_HProxyLibrary_getPuntingSpecs(JNIEnv
+        *env, jclass thiz)
+{
+    loadJniPuntingSpec(env);
+
+    return getPuntingSpecArray(env, thiz);
 }
 
 extern "C"
