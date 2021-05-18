@@ -23,37 +23,6 @@ export BASE_DIR=`pwd`
 mkdir -p src
 cd src
 
-#if [ ! -d hicn ]; then
-#	echo "libhicn not found"
-#	git clone https://github.com/FDio/hicn.git
-#	cd hicn
-#	git checkout $HICN_COMMIT
-#	for hash in $(git log -100 --format="%H")
-#	do
-#		if ! grep -q $hash "${BLACKLIST_FILE}"; then
-#  			actual_hash=$(git log -1 --format="%H")
-#  			if [ "${hash}" != "${actual_hash}" ]; then
-#  				git checkout $hash
-# 				if [ -f ${VERSIONS_FILE} ]; then
-#  					installed_version_arm64=$(cat ${VERSIONS_FILE} | grep "arm64_hicn" | awk -F "=" '{print $2;}')
-#  					if [ "$installed_version_arm64" != "$hash" ]; then
-#  						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libhicn*
-#						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/lib/libfacemgr.*
-#						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_arm64/include/hicn
-#  					fi
-#  					installed_version_x86=$(cat ${VERSIONS_FILE} | grep "x86_hicn" | awk -F "=" '{print $2;}')
-#  					if [ "$installed_version_armx86" != "$hash" ]; then
-#  						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libhicn*
-#						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/lib/libfacemgr.*
-#						rm -rf ${DISTILLERY_INSTALL_DIR_PREFIX}_x86/include/hicn
-#  					fi
-#  				fi
-#  			fi
-#  			break
-#		fi
-#	done
-#	cd ..
-#fi
 
 if [ ! -d hicn ]; then
         echo "hicn not found"
@@ -62,7 +31,7 @@ fi
 
 if [ ! -d hproxy ]; then
         echo "hproxy not found"
-        git clone -b samsung-devel ssh://git@bitbucket-eng-gpk1.cisco.com:7999/ngl/hproxy.git
+        git clone ssh://git@bitbucket-eng-gpk1.cisco.com:7999/ngl/hproxy.git
 fi
 
 if [ ! -d cframework ]; then
